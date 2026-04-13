@@ -49,7 +49,7 @@
     </div>
 
     <script>
-        const N8N_GET_URL = 'https://deniz3300.app.n8n.cloud/webhook/urunleri-getir';
+        const SHEET_DATA_URL = 'https://opensheet.elk.sh/1oEEXP5UdlKQ_B4MamuSHMbpyMraFeX7y1ioLvOrYtP8/Urun_Listesi';
         const N8N_POST_URL = 'https://deniz3300.app.n8n.cloud/webhook/kayit-ekle';
         let allProducts = [];
 
@@ -63,18 +63,25 @@
 
         async function loadProducts() {
             try {
-                const response = await fetch(N8N_GET_URL);
+                const response = await fetch(SHEET_DATA_URL);
                 allProducts = await response.json();
                 const select = document.getElementById('product-list');
                 select.innerHTML = '<option value="">Seçiniz...</option>';
+                
                 allProducts.forEach(p => {
-                    select.innerHTML += `<option value="${p.Urun_Adi}">${p.Urun_Adi}</option>`;
+                    if(p.Urun_Adi) {
+                        select.innerHTML += `<option value="${p.Urun_Adi}">${p.Urun_Adi}</option>`;
+                    }
                 });
+
                 select.addEventListener('change', (e) => {
                     const item = allProducts.find(x => x.Urun_Adi === e.target.value);
                     document.getElementById('unit').value = item ? item.Birim : '';
                 });
-            } catch (e) { console.error('Hata:', e); }
+            } catch (e) { 
+                console.error('Hata:', e);
+                alert('Ürünler yüklenemedi. Lütfen Google Sheets paylaşım ayarlarını kontrol edin.');
+            }
         }
 
         async function submitData() {
