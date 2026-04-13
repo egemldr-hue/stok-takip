@@ -3,84 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stok Takip Sistemi</title>
+    <title>Stok Takip Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        #logs-container::-webkit-scrollbar { width: 5px; }
-        #logs-container::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
-        .font-black { font-weight: 900 !important; }
-    </style>
 </head>
 <body class="bg-slate-200 min-h-screen p-4 font-sans text-black">
 
     <div id="login-screen" class="max-w-md mx-auto bg-white p-8 rounded-3xl shadow-2xl mt-20">
-        <h2 class="text-3xl font-black mb-6 text-center text-blue-600 uppercase">Sistem Girişi</h2>
-        <input type="password" id="password" placeholder="Şifre" class="w-full p-4 border-2 border-slate-300 rounded-2xl mb-4 text-center text-xl text-black outline-none font-black">
+        <h2 class="text-3xl font-black mb-6 text-center text-blue-600 uppercase italic">Sistem Girişi</h2>
+        <input type="password" id="password" placeholder="Şifre" class="w-full p-4 border-2 border-slate-300 rounded-2xl mb-4 text-center text-xl font-black outline-none focus:border-blue-500">
         <button onclick="checkLogin()" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black text-lg shadow-lg active:scale-95 transition-all">GİRİŞ YAP</button>
     </div>
 
     <div id="form-screen" class="max-w-md mx-auto hidden relative">
         <div class="flex justify-between items-center mb-6 px-2">
-            <h1 class="text-2xl font-black tracking-tighter text-black uppercase">Malzeme Kayıt</h1>
+            <h1 class="text-2xl font-black tracking-tighter uppercase text-slate-800">Malzeme Kayıt</h1>
             <button onclick="location.reload()" class="bg-red-600 text-white px-4 py-2 rounded-xl font-black text-xs shadow-md uppercase">Çıkış</button>
         </div>
         
-        <div class="bg-white p-6 rounded-[2rem] shadow-xl mb-6 border-b-4 border-blue-500">
+        <div class="bg-white p-6 rounded-[2.5rem] shadow-xl mb-6 border-b-8 border-blue-500">
             <div class="space-y-4">
                 <div>
-                    <label class="text-[10px] font-black text-black uppercase ml-2">Ürünü Alan Kişi</label>
+                    <label class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Alan Kişi</label>
                     <input type="text" id="receiver" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-black font-black outline-none focus:border-blue-500" placeholder="Ad Soyad">
                 </div>
                 <div>
-                    <label class="text-[10px] font-black text-black uppercase ml-2">Ürün Seçimi</label>
+                    <label class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Ürün</label>
                     <select id="product-list" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-black font-black outline-none">
                         <option value="">Yükleniyor...</option>
                     </select>
                 </div>
                 <div class="flex space-x-3">
                     <div class="flex-1">
-                        <label class="text-[10px] font-black text-black uppercase ml-2">Miktar</label>
-                        <input type="number" id="amount" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-black font-black text-center text-xl" value="1" min="1">
+                        <label class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Miktar</label>
+                        <input type="number" id="amount" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-black font-black text-center text-xl" value="1">
                     </div>
                     <div class="flex-1">
-                        <label class="text-[10px] font-black text-black uppercase ml-2">Birim</label>
-                        <input type="text" id="unit" class="w-full p-4 bg-blue-50 text-blue-900 font-black rounded-2xl text-center border-2 border-blue-200 text-xl" readonly placeholder="-">
+                        <label class="text-[10px] font-black text-slate-400 uppercase ml-2 tracking-widest">Birim</label>
+                        <input type="text" id="unit" class="w-full p-4 bg-blue-50 text-blue-900 font-black rounded-2xl text-center border-2 border-blue-100 text-xl" readonly>
                     </div>
                 </div>
-                <div>
-                    <label class="text-[10px] font-black text-black uppercase ml-2">Açıklama / Not</label>
-                    <input type="text" id="dept" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-black font-black outline-none" placeholder="Örn: Paketleme">
-                </div>
-                <button onclick="submitData()" id="submit-btn" class="w-full bg-emerald-600 text-white p-5 rounded-2xl font-black text-lg shadow-lg active:scale-95 transition-all uppercase">Kaydı Tamamla</button>
-                <div id="success-msg" class="hidden text-center p-3 bg-emerald-100 text-emerald-900 rounded-2xl font-black">✅ Sheets'e Kaydedildi!</div>
+                <button onclick="submitData()" id="submit-btn" class="w-full bg-emerald-600 text-white p-5 rounded-2xl font-black text-lg shadow-lg active:scale-95 transition-all">KAYDI TAMAMLA</button>
+                <div id="success-msg" class="hidden text-center p-3 bg-emerald-100 text-emerald-900 rounded-2xl font-black">✅ Başarıyla Kaydedildi!</div>
             </div>
         </div>
 
-        <button onclick="openLogs()" class="w-full bg-white border-2 border-blue-600 text-blue-600 p-5 rounded-[2rem] font-black flex justify-center items-center gap-3 shadow-xl hover:bg-blue-50 transition-all uppercase">
-            <span>📋 Kayıt Geçmişini Gör</span>
+        <button onclick="openLogs()" class="w-full bg-white border-4 border-blue-600 text-blue-600 p-5 rounded-[2.5rem] font-black flex justify-center items-center gap-3 shadow-xl hover:bg-blue-50">
+            <span>📋 GEÇMİŞİ GÖRÜNTÜLE</span>
         </button>
     </div>
 
     <div id="logs-modal" class="fixed inset-0 bg-slate-900/95 backdrop-blur-md hidden z-50 p-4 flex items-center">
         <div class="bg-white w-full max-w-md mx-auto rounded-[2.5rem] shadow-2xl h-[85vh] flex flex-col">
-            <div class="p-8 border-b flex justify-between items-center bg-white rounded-t-[2.5rem]">
-                <h2 class="text-2xl font-black text-black uppercase italic">İşlem Geçmişi</h2>
-                <button onclick="closeLogs()" class="text-4xl font-light text-slate-400 hover:text-red-600">&times;</button>
+            <div class="p-8 border-b flex justify-between items-center">
+                <h2 class="text-2xl font-black text-black italic uppercase">İşlem Geçmişi</h2>
+                <button onclick="closeLogs()" class="text-4xl font-light text-slate-300 hover:text-red-500">&times;</button>
             </div>
             
             <div id="logs-container" class="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-100">
-                <p class="text-center text-black py-10 font-black italic">Veriler Taranıyor...</p>
+                <p class="text-center text-slate-500 py-10 font-black italic">Veriler taranıyor...</p>
             </div>
 
             <div class="p-6 border-t bg-white rounded-b-[2.5rem]">
-                <button onclick="loadRecentLogs()" class="w-full py-4 text-blue-600 font-black text-sm bg-blue-50 rounded-2xl border-2 border-blue-100 uppercase">Listeyi Yenile ↻</button>
+                <button onclick="loadRecentLogs()" class="w-full py-4 text-blue-600 font-black text-sm bg-blue-50 rounded-2xl border-2 border-blue-100 shadow-sm active:scale-95 transition-all">LİSTEYİ YENİLE ↻</button>
             </div>
         </div>
     </div>
 
     <script>
         const SHEET_ID = '1oEEXP5UdlKQ_B4MamuSHMbpyMraFeX7y1ioLvOrYtP8';
-        const N8N_POST_URL = 'https://deniz3300.app.n8n.cloud/webhook/kayit-ekle';
+        const WEBHOOK_URL = 'https://deniz3300.app.n8n.cloud/webhook/kayit-ekle';
         
         function checkLogin() {
             if(document.getElementById('password').value === '1234') {
@@ -103,14 +94,14 @@
                 const select = document.getElementById('product-list');
                 select.innerHTML = '<option value="">Seçiniz...</option>';
                 data.forEach(p => {
-                    const name = p["Ürün Adı"] || p.Urun_Adi || p.product || p.Ürün;
+                    const name = p["Ürün Adı"] || p.Urun_Adi || p.product;
                     if(name) {
                         const opt = document.createElement('option');
                         opt.value = name; opt.textContent = name; select.appendChild(opt);
                     }
                 });
                 select.addEventListener('change', (e) => {
-                    const item = data.find(x => (x["Ürün Adı"] || x.Urun_Adi || x.product || x.Ürün) === e.target.value);
+                    const item = data.find(x => (x["Ürün Adı"] || x.Urun_Adi || x.product) === e.target.value);
                     document.getElementById('unit').value = item ? (item.Birim || item.unit) : '';
                 });
             } catch (e) { console.error("Hata!"); }
@@ -118,39 +109,37 @@
 
         async function loadRecentLogs() {
             const container = document.getElementById('logs-container');
-            container.innerHTML = '<p class="text-center text-blue-600 font-black py-10 animate-pulse uppercase">Excel Taranıyor...</p>';
+            container.innerHTML = '<p class="text-center py-10 font-black text-blue-600 animate-pulse">Excel taranıyor...</p>';
             try {
-                // Linki doğrudan burada oluşturuyoruz
-                const res = await fetch(`https://opensheet.elk.sh/${SHEET_ID}/KAYITLAR?t=${Date.now()}`);
-                if(!res.ok) throw new Error();
+                // Sayfa adı KAYIT olarak güncellendi!
+                const res = await fetch(`https://opensheet.elk.sh/${SHEET_ID}/KAYIT?t=${Date.now()}`);
+                if (!res.ok) throw new Error();
                 const logs = await res.json();
-                container.innerHTML = '';
                 
+                container.innerHTML = '';
                 if (!Array.isArray(logs) || logs.length === 0) {
-                    container.innerHTML = '<p class="text-center py-10 font-black text-red-500 uppercase">Excel Boş Görünüyor!</p>';
+                    container.innerHTML = '<p class="text-center py-10 font-black text-slate-400">Henüz kayıt yok.</p>';
                     return;
                 }
 
                 logs.reverse().forEach(log => {
-                    const product = log["Ürün Adı"] || log.product || "Bilinmiyor";
+                    const product = log["Ürün Adı"] || log.product || "Belirsiz";
                     const amount = log["Miktar"] || log.amount || "0";
                     const unit = log["Birim"] || log.unit || "";
                     const receiver = log["Ürünü Alan Kişi"] || log.receiver || "-";
                     const date = log["Kayıt Tarihi"] || log.date || "";
                     const time = log["Kayıt Saati"] || log.time || "";
-                    const dept = log["Açıklama"] || log["Bölüm"] || "-";
 
                     const div = document.createElement('div');
-                    div.className = "p-5 bg-white rounded-3xl shadow-lg border-2 border-slate-50";
+                    div.className = "p-5 bg-white rounded-3xl shadow-lg border-2 border-white";
                     div.innerHTML = `
                         <div class="flex justify-between items-start mb-2">
-                            <span class="font-black text-black text-lg leading-tight uppercase">${product}</span>
-                            <span class="bg-blue-600 text-white px-3 py-1 rounded-xl text-xs font-black">${amount} ${unit}</span>
+                            <span class="font-black text-black text-lg uppercase leading-tight">${product}</span>
+                            <span class="bg-blue-600 text-white px-3 py-1 rounded-xl text-xs font-black shadow-md">${amount} ${unit}</span>
                         </div>
-                        <div class="space-y-1 border-t pt-2">
-                            <p class="text-[11px] text-black font-black uppercase"><span class="text-blue-500">Alan:</span> ${receiver}</p>
-                            <p class="text-[11px] text-black font-black uppercase"><span class="text-blue-500">Not:</span> ${dept}</p>
-                            <div class="flex justify-between text-[10px] text-slate-400 font-black mt-2 pt-1 border-t border-dotted">
+                        <div class="border-t pt-2 space-y-1">
+                            <p class="text-[11px] font-black text-slate-500 uppercase">👤 ALAN: <span class="text-black">${receiver}</span></p>
+                            <div class="flex justify-between text-[10px] font-black text-slate-300 mt-2">
                                 <span>📅 ${date}</span>
                                 <span>⏰ ${time}</span>
                             </div>
@@ -159,7 +148,7 @@
                     container.appendChild(div);
                 });
             } catch (e) { 
-                container.innerHTML = '<p class="text-center py-10 text-red-600 font-black uppercase tracking-tighter">Bağlantı Kurulamadı!<br><span class="text-[9px] text-slate-400 font-bold">Sayfa adının KAYITLAR olduğundan emin ol.</span></p>'; 
+                container.innerHTML = '<div class="text-center py-10 text-red-600 font-black uppercase"><p>Bağlantı Kurulamadı!</p><p class="text-[9px] text-slate-400 mt-2 tracking-normal">Excel sekme adının KAYIT (hepsi büyük) olduğundan emin ol.</p></div>'; 
             }
         }
 
@@ -172,13 +161,12 @@
                 product: document.getElementById('product-list').value,
                 amount: document.getElementById('amount').value,
                 unit: document.getElementById('unit').value,
-                dept: document.getElementById('dept').value,
                 staff: "Sistem"
             };
-            if(!data.receiver || !data.product || !data.amount) { alert('Tüm alanları doldur knk!'); return; }
-            btn.disabled = true; btn.innerText = 'YAZILIYOR...';
+            if(!data.receiver || !data.product || !data.amount) { alert('Boş bırakma knk!'); return; }
+            btn.disabled = true; btn.innerText = 'GÖNDERİLİYOR...';
             try {
-                const res = await fetch(N8N_POST_URL, {
+                const res = await fetch(WEBHOOK_URL, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(data)
@@ -186,7 +174,6 @@
                 if(res.ok) {
                     document.getElementById('success-msg').classList.remove('hidden');
                     document.getElementById('amount').value = '1';
-                    document.getElementById('dept').value = '';
                     setTimeout(() => { document.getElementById('success-msg').classList.add('hidden'); }, 3000);
                 }
             } catch (e) { alert('Hata!'); }
