@@ -18,18 +18,18 @@
         <div class="space-y-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700">Ürünü Alan Kişi</label>
-                <input type="text" id="receiver" class="w-full p-2 border rounded-lg" placeholder="Ad Soyad">
+                <input type="text" id="receiver" class="w-full p-2 border rounded-lg" placeholder="Ad Soyad" autocomplete="off">
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700">Ürün Seçin</label>
                 <select id="product-list" class="w-full p-2 border rounded-lg bg-white">
-                    <option value="">Ürünler yükleniyor...</option>
+                    <option value="">Yükleniyor...</option>
                 </select>
             </div>
             <div class="flex space-x-2">
                 <div class="flex-1">
                     <label class="block text-sm font-medium text-gray-700">Miktar</label>
-                    <input type="number" id="amount" class="w-full p-2 border rounded-lg" placeholder="0">
+                    <input type="number" id="amount" class="w-full p-2 border rounded-lg" placeholder="0" autocomplete="off">
                 </div>
                 <div class="flex-1">
                     <label class="block text-sm font-medium text-gray-700">Birim</label>
@@ -38,19 +38,23 @@
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700">Bölüm / Departman</label>
-                <input type="text" id="dept" class="w-full p-2 border rounded-lg" placeholder="Örn: Paketleme">
+                <input type="text" id="dept" class="w-full p-2 border rounded-lg" placeholder="Örn: Paketleme" autocomplete="off">
             </div>
             <div>
                 <label class="block text-sm font-medium text-gray-700">Açıklama / Not</label>
-                <textarea id="note" class="w-full p-2 border rounded-lg" rows="2"></textarea>
+                <textarea id="note" class="w-full p-2 border rounded-lg" rows="2" autocomplete="off"></textarea>
             </div>
             <button onclick="submitData()" id="submit-btn" class="w-full bg-green-600 text-white p-4 rounded-lg font-bold text-lg shadow-md">KAYDET</button>
         </div>
     </div>
 
     <script>
-        const SHEET_DATA_URL = 'https://opensheet.elk.sh/1oEEXP5UdlKQ_B4MamuSHMbpyMraFeX7y1ioLvOrYtP8/Urun_Listesi';
+        // Senin tablonun ID'si ve sayfa adını buraya net bir şekilde yazdım
+        const SHEET_ID = '1oEEXP5UdlKQ_B4MamuSHMbpyMraFeX7y1ioLvOrYtP8';
+        const SHEET_NAME = 'Urun_Listesi';
+        const SHEET_DATA_URL = `https://opensheet.elk.sh/${SHEET_ID}/${SHEET_NAME}`;
         const N8N_POST_URL = 'https://deniz3300.app.n8n.cloud/webhook/kayit-ekle';
+        
         let allProducts = [];
 
         function checkLogin() {
@@ -64,13 +68,18 @@
         async function loadProducts() {
             try {
                 const response = await fetch(SHEET_DATA_URL);
+                if (!response.ok) throw new Error('Tabloya ulaşılamadı');
+                
                 allProducts = await response.json();
                 const select = document.getElementById('product-list');
                 select.innerHTML = '<option value="">Seçiniz...</option>';
                 
                 allProducts.forEach(p => {
                     if(p.Urun_Adi) {
-                        select.innerHTML += `<option value="${p.Urun_Adi}">${p.Urun_Adi}</option>`;
+                        const option = document.createElement('option');
+                        option.value = p.Urun_Adi;
+                        option.textContent = p.Urun_Adi;
+                        select.appendChild(option);
                     }
                 });
 
@@ -78,9 +87,11 @@
                     const item = allProducts.find(x => x.Urun_Adi === e.target.value);
                     document.getElementById('unit').value = item ? item.Birim : '';
                 });
+                
+                console.log('Ürünler yüklendi:', allProducts);
             } catch (e) { 
                 console.error('Hata:', e);
-                alert('Ürünler yüklenemedi. Lütfen Google Sheets paylaşım ayarlarını kontrol edin.');
+                alert('Ürünler çekilemedi! Tablodaki sayfa isminin "Urun_Listesi" olduğundan emin olun.');
             }
         }
 
@@ -97,17 +108,28 @@
                 note: document.getElementById('note').value,
                 staff: "Sistem"
             };
-            if(!data.receiver || !data.product || !data.amount) { alert('Eksik alanları doldurun!'); return; }
-            btn.disabled = true; btn.innerText = 'GÖNDERİLİYOR...';
+            if(!data.receiver || !data.product || !data.amount) { alert('Lütfen gerekli alanları doldurun!'); return; }
+            
+            btn.disabled = true; 
+            btn.innerText = 'GÖNDERİLİYOR...';
+            
             try {
-                await fetch(N8N_POST_URL, {
+                const res = await fetch(N8N_POST_URL, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(data)
                 });
-                alert('Kayıt Başarıyla Eklendi!');
-                location.reload();
-            } catch (e) { alert('Hata oluştu!'); btn.disabled = false; btn.innerText = 'KAYDET'; }
+                if(res.ok) {
+                    alert('Kayıt Başarıyla Eklendi!');
+                    location.reload();
+                } else {
+                    throw new Error('Gönderim hatası');
+                }
+            } catch (e) { 
+                alert('Hata: Kayıt eklenemedi, n8n bağlantısını kontrol edin.'); 
+                btn.disabled = false; 
+                btn.innerText = 'KAYDET'; 
+            }
         }
     </script>
 </body>
