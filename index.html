@@ -5,52 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stok Takip Sistemi</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Kaydırma çubuğunu güzelleştirelim */
+        #logs-container::-webkit-scrollbar { width: 5px; }
+        #logs-container::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+    </style>
 </head>
-<body class="bg-gray-100 min-h-screen p-4">
-    <div id="login-screen" class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-lg mt-10">
-        <h2 class="text-2xl font-bold mb-6 text-center text-blue-600">Sistem Girişi</h2>
-        <input type="password" id="password" placeholder="Şifre" class="w-full p-3 border rounded-lg mb-4 text-center text-lg">
-        <button onclick="checkLogin()" class="w-full bg-blue-600 text-white p-3 rounded-lg font-bold text-lg hover:bg-blue-700">Giriş Yap</button>
+<body class="bg-gray-100 min-h-screen p-4 font-sans text-gray-800">
+
+    <div id="login-screen" class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-2xl mt-20 border border-gray-100">
+        <h2 class="text-3xl font-extrabold mb-6 text-center text-blue-600 tracking-tight">Stok Giriş</h2>
+        <input type="password" id="password" placeholder="Sistem Şifresi" class="w-full p-4 border-2 border-gray-200 rounded-xl mb-4 text-center text-xl focus:border-blue-500 outline-none transition-all">
+        <button onclick="checkLogin()" class="w-full bg-blue-600 text-white p-4 rounded-xl font-bold text-lg shadow-lg hover:bg-blue-700 active:scale-95 transition-all">Giriş Yap</button>
     </div>
 
-    <div id="form-screen" class="max-w-md mx-auto hidden relative">
-        <button onclick="logout()" class="absolute -top-2 -right-0 bg-red-500 text-white px-3 py-1 rounded-md text-sm font-bold shadow hover:bg-red-600 z-10">Çıkış</button>
+    <div id="form-screen" class="max-w-md mx-auto hidden animate-fade-in">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Malzeme Kayıt</h1>
+            <button onclick="logout()" class="bg-red-100 text-red-600 px-4 py-2 rounded-lg font-bold text-sm shadow-sm">Çıkış</button>
+        </div>
         
-        <div class="bg-white p-6 rounded-xl shadow-lg mb-6">
-            <h2 class="text-xl font-bold mb-4 text-blue-600 border-b pb-2">Malzeme Kayıt Formu</h2>
+        <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-50 mb-6">
             <div class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Ürünü Alan Kişi</label>
-                    <input type="text" id="receiver" class="w-full p-2 border rounded-lg" placeholder="Ad Soyad" autocomplete="off">
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Ürünü Alan Kişi</label>
+                    <input type="text" id="receiver" class="w-full p-3 border-2 border-gray-100 rounded-xl focus:border-blue-500 outline-none" placeholder="Ad Soyad" autocomplete="off">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Ürün Seçin</label>
-                    <select id="product-list" class="w-full p-2 border rounded-lg bg-white">
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Ürün Seçimi</label>
+                    <select id="product-list" class="w-full p-3 border-2 border-gray-100 rounded-xl bg-white focus:border-blue-500 outline-none">
                         <option value="">Yükleniyor...</option>
                     </select>
                 </div>
-                <div class="flex space-x-2">
+                <div class="flex space-x-3">
                     <div class="flex-1">
-                        <label class="block text-sm font-medium text-gray-700">Miktar</label>
-                        <input type="number" id="amount" class="w-full p-2 border rounded-lg" placeholder="0">
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Miktar</label>
+                        <input type="number" id="amount" class="w-full p-3 border-2 border-gray-100 rounded-xl focus:border-blue-500 outline-none" placeholder="0">
                     </div>
                     <div class="flex-1">
-                        <label class="block text-sm font-medium text-gray-700">Birim</label>
-                        <input type="text" id="unit" class="w-full p-2 border rounded-lg bg-gray-50" readonly placeholder="-">
+                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Birim</label>
+                        <input type="text" id="unit" class="w-full p-3 border-2 border-gray-50 rounded-xl bg-gray-50 font-bold text-blue-600" readonly placeholder="-">
                     </div>
                 </div>
-                <button onclick="submitData()" id="submit-btn" class="w-full bg-green-600 text-white p-4 rounded-lg font-bold text-lg shadow-md hover:bg-green-700 transition-all">KAYDET</button>
-                <div id="success-msg" class="hidden text-center p-2 bg-green-100 text-green-700 rounded-lg font-bold">✅ Başarıyla Eklendi!</div>
+                <button onclick="submitData()" id="submit-btn" class="w-full bg-green-500 text-white p-4 rounded-xl font-extrabold text-lg shadow-lg hover:bg-green-600 active:scale-95 transition-all">KAYDI TAMAMLA</button>
+                <div id="success-msg" class="hidden text-center p-3 bg-green-50 text-green-600 rounded-xl font-bold border border-green-200">✅ İşlem Başarılı!</div>
             </div>
         </div>
 
-        <div class="bg-white p-6 rounded-xl shadow-lg">
-            <div class="flex justify-between items-center mb-4 border-b pb-2">
-                <h2 class="text-lg font-bold text-gray-800">Son İşlemler</h2>
-                <button onclick="loadRecentLogs()" class="text-blue-500 text-sm font-bold">Yenile ↻</button>
+        <button onclick="openLogs()" class="w-full bg-white border-2 border-blue-500 text-blue-600 p-4 rounded-xl font-bold flex justify-center items-center gap-2 hover:bg-blue-50 transition-all shadow-md">
+            <span>📋 Yapılan Kayıtları Listele</span>
+        </button>
+    </div>
+
+    <div id="logs-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 p-4 animate-fade-in">
+        <div class="bg-white w-full max-w-md mx-auto rounded-3xl shadow-2xl h-[85vh] flex flex-col mt-10">
+            <div class="p-6 border-b flex justify-between items-center">
+                <div>
+                    <h2 class="text-xl font-bold text-gray-800">İşlem Geçmişi</h2>
+                    <p class="text-xs text-gray-400 font-bold uppercase">Son Kayıtlar</p>
+                </div>
+                <button onclick="closeLogs()" class="text-gray-400 hover:text-red-500 text-3xl font-light">&times;</button>
             </div>
-            <div id="logs-container" class="space-y-3">
-                <p class="text-gray-400 text-center text-sm">Kayıtlar yükleniyor...</p>
+            
+            <div id="logs-container" class="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50/50">
+                <p class="text-center text-gray-400 py-10">Yükleniyor...</p>
+            </div>
+
+            <div class="p-4 border-t">
+                <button onclick="loadRecentLogs()" class="w-full py-3 text-blue-600 font-bold text-sm bg-blue-50 rounded-xl hover:bg-blue-100">Listeyi Yenile ↻</button>
             </div>
         </div>
     </div>
@@ -58,76 +80,73 @@
     <script>
         const SHEET_ID = '1oEEXP5UdlKQ_B4MamuSHMbpyMraFeX7y1ioLvOrYtP8';
         const SHEET_DATA_URL = `https://opensheet.elk.sh/${SHEET_ID}/Urun_Listesi`;
-        const LOGS_DATA_URL = `https://opensheet.elk.sh/${SHEET_ID}/KAYITLAR`; // Kayıtları çektiğimiz yer
+        const LOGS_DATA_URL = `https://opensheet.elk.sh/${SHEET_ID}/KAYITLAR`;
         const N8N_POST_URL = 'https://deniz3300.app.n8n.cloud/webhook/kayit-ekle';
         
-        let allProducts = [];
-
         function checkLogin() {
             if(document.getElementById('password').value === '1234') {
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('form-screen').classList.remove('hidden');
                 loadProducts();
-                loadRecentLogs(); // Kayıtları getir
             } else { alert('Hatalı Şifre!'); }
         }
 
         function logout() { location.reload(); }
+        function openLogs() { 
+            document.getElementById('logs-modal').classList.remove('hidden');
+            loadRecentLogs();
+        }
+        function closeLogs() { document.getElementById('logs-modal').classList.add('hidden'); }
 
         async function loadProducts() {
-            try {
-                const response = await fetch(SHEET_DATA_URL);
-                allProducts = await response.json();
-                const select = document.getElementById('product-list');
-                select.innerHTML = '<option value="">Seçiniz...</option>';
-                allProducts.forEach(p => {
-                    if(p.Urun_Adi) {
-                        const option = document.createElement('option');
-                        option.value = p.Urun_Adi;
-                        option.textContent = p.Urun_Adi;
-                        select.appendChild(option);
-                    }
-                });
-                select.addEventListener('change', (e) => {
-                    const item = allProducts.find(x => x.Urun_Adi === e.target.value);
-                    document.getElementById('unit').value = item ? item.Birim : '';
-                });
-            } catch (e) { console.log("Ürün yükleme hatası"); }
+            const response = await fetch(SHEET_DATA_URL);
+            const data = await response.json();
+            const select = document.getElementById('product-list');
+            select.innerHTML = '<option value="">Seçiniz...</option>';
+            data.forEach(p => {
+                const name = p.Urun_Adi || p.product;
+                if(name) {
+                    const option = document.createElement('option');
+                    option.value = name;
+                    option.textContent = name;
+                    select.appendChild(option);
+                }
+            });
+            select.addEventListener('change', (e) => {
+                const item = data.find(x => (x.Urun_Adi || x.product) === e.target.value);
+                document.getElementById('unit').value = item ? (item.Birim || item.unit) : '';
+            });
         }
 
         async function loadRecentLogs() {
             const container = document.getElementById('logs-container');
+            container.innerHTML = '<div class="text-center py-10"><div class="animate-spin inline-block w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full mb-2"></div><p class="text-sm text-gray-400">Veriler çekiliyor...</p></div>';
             try {
                 const response = await fetch(LOGS_DATA_URL);
                 const logs = await response.json();
                 container.innerHTML = '';
                 
-                // En son yapılan 5 kaydı göster (Ters çevirip ilk 5'i alıyoruz)
-                const recentLogs = logs.reverse().slice(0, 5);
-                
-                recentLogs.forEach(log => {
+                // En son yapılanları en üstte göster (Hepsini gösteriyoruz, kaydırılabilir)
+                logs.reverse().forEach(log => {
                     const div = document.createElement('div');
-                    div.className = "p-3 bg-gray-50 rounded-lg border-l-4 border-blue-500 text-sm";
+                    div.className = "p-4 bg-white rounded-2xl shadow-sm border border-gray-100";
                     div.innerHTML = `
-                        <div class="flex justify-between font-bold text-gray-700">
-                            <span>${log.product || 'Bilinmiyor'}</span>
-                            <span class="text-blue-600">${log.amount} ${log.unit || ''}</span>
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="font-bold text-gray-800 text-base">${log.product || log.Urun_Adi || 'Bilinmiyor'}</span>
+                            <span class="bg-blue-50 text-blue-700 px-2 py-1 rounded-lg text-xs font-black tracking-tighter">${log.amount || '0'} ${log.unit || log.Birim || ''}</span>
                         </div>
-                        <div class="flex justify-between text-gray-500 text-xs mt-1">
-                            <span>Kişi: ${log.receiver}</span>
-                            <span>${log.date} - ${log.time}</span>
+                        <div class="flex justify-between text-[11px] text-gray-400 font-medium">
+                            <span>Teslim Alan: <span class="text-gray-600">${log.receiver || log.Alan_Kisi || 'Bilinmiyor'}</span></span>
+                            <span>${log.date || ''} ${log.time || ''}</span>
                         </div>
                     `;
                     container.appendChild(div);
                 });
-            } catch (e) { 
-                container.innerHTML = '<p class="text-red-400 text-center">Kayıtlar şu an alınamıyor.</p>';
-            }
+            } catch (e) { container.innerHTML = '<p class="text-red-400 text-center">Bağlantı hatası.</p>'; }
         }
 
         async function submitData() {
             const btn = document.getElementById('submit-btn');
-            const successMsg = document.getElementById('success-msg');
             const data = {
                 date: new Date().toLocaleDateString('tr-TR'),
                 time: new Date().toLocaleTimeString('tr-TR'),
@@ -135,14 +154,10 @@
                 product: document.getElementById('product-list').value,
                 amount: document.getElementById('amount').value,
                 unit: document.getElementById('unit').value,
-                dept: "Fabrika", // Varsayılan
-                staff: "Sistem"
+                dept: "Fabrika", staff: "Sistem"
             };
-
-            if(!data.receiver || !data.product || !data.amount) { alert('Alanları doldurun!'); return; }
-            
+            if(!data.receiver || !data.product || !data.amount) { alert('Lütfen formu doldurun!'); return; }
             btn.disabled = true; btn.innerText = 'GÖNDERİLİYOR...';
-            
             try {
                 const res = await fetch(N8N_POST_URL, {
                     method: 'POST',
@@ -150,15 +165,12 @@
                     body: JSON.stringify(data)
                 });
                 if(res.ok) {
-                    successMsg.classList.remove('hidden');
+                    document.getElementById('success-msg').classList.remove('hidden');
                     document.getElementById('amount').value = '';
-                    setTimeout(() => { 
-                        successMsg.classList.add('hidden'); 
-                        loadRecentLogs(); // Listeyi güncelle
-                    }, 2000);
+                    setTimeout(() => { document.getElementById('success-msg').classList.add('hidden'); }, 3000);
                 }
             } catch (e) { alert('Hata!'); }
-            btn.disabled = false; btn.innerText = 'KAYDET';
+            btn.disabled = false; btn.innerText = 'KAYDI TAMAMLA';
         }
     </script>
 </body>
