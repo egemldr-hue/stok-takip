@@ -6,73 +6,74 @@
     <title>Stok Takip Sistemi</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Kaydırma çubuğunu güzelleştirelim */
-        #logs-container::-webkit-scrollbar { width: 5px; }
+        #logs-container::-webkit-scrollbar { width: 4px; }
         #logs-container::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+        .animate-pop { animation: pop 0.3s ease-out; }
+        @keyframes pop { 0% { transform: scale(0.95); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen p-4 font-sans text-gray-800">
+<body class="bg-slate-100 min-h-screen p-4 font-sans">
 
-    <div id="login-screen" class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-2xl mt-20 border border-gray-100">
-        <h2 class="text-3xl font-extrabold mb-6 text-center text-blue-600 tracking-tight">Stok Giriş</h2>
-        <input type="password" id="password" placeholder="Sistem Şifresi" class="w-full p-4 border-2 border-gray-200 rounded-xl mb-4 text-center text-xl focus:border-blue-500 outline-none transition-all">
-        <button onclick="checkLogin()" class="w-full bg-blue-600 text-white p-4 rounded-xl font-bold text-lg shadow-lg hover:bg-blue-700 active:scale-95 transition-all">Giriş Yap</button>
+    <div id="login-screen" class="max-w-md mx-auto bg-white p-8 rounded-3xl shadow-2xl mt-20 border border-gray-100">
+        <h2 class="text-3xl font-black mb-6 text-center text-blue-600">Sistem Girişi</h2>
+        <input type="password" id="password" placeholder="Şifre" class="w-full p-4 border-2 border-gray-100 rounded-2xl mb-4 text-center text-xl focus:border-blue-500 outline-none transition-all">
+        <button onclick="checkLogin()" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-bold text-lg shadow-lg active:scale-95 transition-all">Giriş Yap</button>
     </div>
 
-    <div id="form-screen" class="max-w-md mx-auto hidden animate-fade-in">
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-800">Malzeme Kayıt</h1>
-            <button onclick="logout()" class="bg-red-100 text-red-600 px-4 py-2 rounded-lg font-bold text-sm shadow-sm">Çıkış</button>
+    <div id="form-screen" class="max-w-md mx-auto hidden animate-pop relative">
+        <div class="flex justify-between items-center mb-6 px-2">
+            <h1 class="text-2xl font-black text-slate-800 tracking-tight">Stok Kayıt</h1>
+            <button onclick="location.reload()" class="bg-red-500 text-white px-4 py-2 rounded-xl font-bold text-xs shadow-md">ÇIKIŞ</button>
         </div>
         
-        <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-50 mb-6">
-            <div class="space-y-4">
+        <div class="bg-white p-6 rounded-[2rem] shadow-xl mb-6 border border-white">
+            <div class="space-y-5">
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Ürünü Alan Kişi</label>
-                    <input type="text" id="receiver" class="w-full p-3 border-2 border-gray-100 rounded-xl focus:border-blue-500 outline-none" placeholder="Ad Soyad" autocomplete="off">
+                    <label class="text-[10px] font-black text-gray-400 uppercase ml-2">Ürünü Alan Kişi</label>
+                    <input type="text" id="receiver" class="w-full p-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none mt-1" placeholder="Ad Soyad" autocomplete="off">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Ürün Seçimi</label>
-                    <select id="product-list" class="w-full p-3 border-2 border-gray-100 rounded-xl bg-white focus:border-blue-500 outline-none">
+                    <label class="text-[10px] font-black text-gray-400 uppercase ml-2">Ürün Seçimi</label>
+                    <select id="product-list" class="w-full p-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none mt-1 appearance-none">
                         <option value="">Yükleniyor...</option>
                     </select>
                 </div>
                 <div class="flex space-x-3">
-                    <div class="flex-1">
-                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Miktar</label>
-                        <input type="number" id="amount" class="w-full p-3 border-2 border-gray-100 rounded-xl focus:border-blue-500 outline-none" placeholder="0">
+                    <div class="flex-[2]">
+                        <label class="text-[10px] font-black text-gray-400 uppercase ml-2">Miktar</label>
+                        <input type="number" id="amount" class="w-full p-4 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none mt-1" placeholder="0">
                     </div>
                     <div class="flex-1">
-                        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Birim</label>
-                        <input type="text" id="unit" class="w-full p-3 border-2 border-gray-50 rounded-xl bg-gray-50 font-bold text-blue-600" readonly placeholder="-">
+                        <label class="text-[10px] font-black text-gray-400 uppercase ml-2">Birim</label>
+                        <input type="text" id="unit" class="w-full p-4 bg-blue-50 text-blue-600 font-black border-none rounded-2xl mt-1 text-center" readonly placeholder="-">
                     </div>
                 </div>
-                <button onclick="submitData()" id="submit-btn" class="w-full bg-green-500 text-white p-4 rounded-xl font-extrabold text-lg shadow-lg hover:bg-green-600 active:scale-95 transition-all">KAYDI TAMAMLA</button>
-                <div id="success-msg" class="hidden text-center p-3 bg-green-50 text-green-600 rounded-xl font-bold border border-green-200">✅ İşlem Başarılı!</div>
+                <button onclick="submitData()" id="submit-btn" class="w-full bg-emerald-500 text-white p-5 rounded-2xl font-black text-lg shadow-lg shadow-emerald-200 active:scale-95 transition-all">KAYDI TAMAMLA</button>
+                <div id="success-msg" class="hidden text-center p-3 bg-emerald-50 text-emerald-600 rounded-2xl font-bold border border-emerald-100">✅ İşlem Sheets'e Yazıldı!</div>
             </div>
         </div>
 
-        <button onclick="openLogs()" class="w-full bg-white border-2 border-blue-500 text-blue-600 p-4 rounded-xl font-bold flex justify-center items-center gap-2 hover:bg-blue-50 transition-all shadow-md">
-            <span>📋 Yapılan Kayıtları Listele</span>
+        <button onclick="openLogs()" class="w-full bg-white border-2 border-blue-500 text-blue-600 p-5 rounded-[2rem] font-black flex justify-center items-center gap-3 hover:bg-blue-50 transition-all shadow-xl">
+            <span>📋 YAPILAN KAYITLARI LİSTELE</span>
         </button>
     </div>
 
-    <div id="logs-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 p-4 animate-fade-in">
-        <div class="bg-white w-full max-w-md mx-auto rounded-3xl shadow-2xl h-[85vh] flex flex-col mt-10">
-            <div class="p-6 border-b flex justify-between items-center">
+    <div id="logs-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md hidden z-50 p-4 flex items-end sm:items-center">
+        <div class="bg-white w-full max-w-md mx-auto rounded-[2.5rem] shadow-2xl h-[80vh] flex flex-col animate-pop">
+            <div class="p-8 border-b flex justify-between items-center bg-slate-50 rounded-t-[2.5rem]">
                 <div>
-                    <h2 class="text-xl font-bold text-gray-800">İşlem Geçmişi</h2>
-                    <p class="text-xs text-gray-400 font-bold uppercase">Son Kayıtlar</p>
+                    <h2 class="text-2xl font-black text-slate-800">Geçmiş</h2>
+                    <p class="text-[10px] text-blue-500 font-black uppercase">Tüm Kayıtlar</p>
                 </div>
-                <button onclick="closeLogs()" class="text-gray-400 hover:text-red-500 text-3xl font-light">&times;</button>
+                <button onclick="closeLogs()" class="bg-white w-10 h-10 rounded-full shadow-md text-gray-400 flex items-center justify-center font-bold text-xl hover:text-red-500">&times;</button>
             </div>
             
-            <div id="logs-container" class="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50/50">
-                <p class="text-center text-gray-400 py-10">Yükleniyor...</p>
+            <div id="logs-container" class="flex-1 overflow-y-auto p-6 space-y-4">
+                <p class="text-center text-gray-400 py-10">Veriler hazırlanıyor...</p>
             </div>
 
-            <div class="p-4 border-t">
-                <button onclick="loadRecentLogs()" class="w-full py-3 text-blue-600 font-bold text-sm bg-blue-50 rounded-xl hover:bg-blue-100">Listeyi Yenile ↻</button>
+            <div class="p-6 border-t bg-slate-50 rounded-b-[2.5rem]">
+                <button onclick="loadRecentLogs()" class="w-full py-4 text-blue-600 font-black text-sm bg-white rounded-2xl shadow-sm border border-blue-100">YENİLE ↻</button>
             </div>
         </div>
     </div>
@@ -91,7 +92,6 @@
             } else { alert('Hatalı Şifre!'); }
         }
 
-        function logout() { location.reload(); }
         function openLogs() { 
             document.getElementById('logs-modal').classList.remove('hidden');
             loadRecentLogs();
@@ -120,29 +120,35 @@
 
         async function loadRecentLogs() {
             const container = document.getElementById('logs-container');
-            container.innerHTML = '<div class="text-center py-10"><div class="animate-spin inline-block w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full mb-2"></div><p class="text-sm text-gray-400">Veriler çekiliyor...</p></div>';
+            container.innerHTML = '<p class="text-center text-blue-400 font-bold animate-pulse">Güncelleniyor...</p>';
             try {
                 const response = await fetch(LOGS_DATA_URL);
                 const logs = await response.json();
                 container.innerHTML = '';
                 
-                // En son yapılanları en üstte göster (Hepsini gösteriyoruz, kaydırılabilir)
                 logs.reverse().forEach(log => {
+                    const pName = log.product || log.Urun_Adi || log.Ürün || "Bilinmiyor";
+                    const pAmount = log.amount || log.Miktar || "0";
+                    const pUnit = log.unit || log.Birim || "";
+                    const pUser = log.receiver || log.Alan_Kisi || "Bilinmiyor";
+                    const pDate = log.date || log.Tarih || "";
+                    const pTime = log.time || log.Saat || "";
+
                     const div = document.createElement('div');
-                    div.className = "p-4 bg-white rounded-2xl shadow-sm border border-gray-100";
+                    div.className = "p-5 bg-white rounded-3xl border border-slate-100 shadow-sm transition-all";
                     div.innerHTML = `
-                        <div class="flex justify-between items-start mb-1">
-                            <span class="font-bold text-gray-800 text-base">${log.product || log.Urun_Adi || 'Bilinmiyor'}</span>
-                            <span class="bg-blue-50 text-blue-700 px-2 py-1 rounded-lg text-xs font-black tracking-tighter">${log.amount || '0'} ${log.unit || log.Birim || ''}</span>
+                        <div class="flex justify-between items-start">
+                            <span class="font-black text-slate-800 text-lg">${pName}</span>
+                            <span class="bg-blue-600 text-white px-3 py-1 rounded-xl text-xs font-black">${pAmount} ${pUnit}</span>
                         </div>
-                        <div class="flex justify-between text-[11px] text-gray-400 font-medium">
-                            <span>Teslim Alan: <span class="text-gray-600">${log.receiver || log.Alan_Kisi || 'Bilinmiyor'}</span></span>
-                            <span>${log.date || ''} ${log.time || ''}</span>
+                        <div class="flex justify-between text-[10px] text-slate-400 mt-2 font-bold uppercase tracking-tight">
+                            <span>ALAN: <span class="text-blue-500">${pUser}</span></span>
+                            <span>${pDate} / ${pTime}</span>
                         </div>
                     `;
                     container.appendChild(div);
                 });
-            } catch (e) { container.innerHTML = '<p class="text-red-400 text-center">Bağlantı hatası.</p>'; }
+            } catch (e) { container.innerHTML = 'Hata oluştu.'; }
         }
 
         async function submitData() {
@@ -156,7 +162,7 @@
                 unit: document.getElementById('unit').value,
                 dept: "Fabrika", staff: "Sistem"
             };
-            if(!data.receiver || !data.product || !data.amount) { alert('Lütfen formu doldurun!'); return; }
+            if(!data.receiver || !data.product || !data.amount) { alert('Tüm alanları doldur knk!'); return; }
             btn.disabled = true; btn.innerText = 'GÖNDERİLİYOR...';
             try {
                 const res = await fetch(N8N_POST_URL, {
