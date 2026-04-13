@@ -6,52 +6,52 @@
     <title>Stok Takip Sistemi</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        #logs-container::-webkit-scrollbar { width: 4px; }
+        #logs-container::-webkit-scrollbar { width: 5px; }
         #logs-container::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
     </style>
 </head>
-<body class="bg-slate-100 min-h-screen p-4 font-sans text-slate-900">
+<body class="bg-slate-200 min-h-screen p-4 font-sans text-slate-900">
 
     <div id="login-screen" class="max-w-md mx-auto bg-white p-8 rounded-3xl shadow-2xl mt-20">
         <h2 class="text-3xl font-black mb-6 text-center text-blue-600">Sistem Girişi</h2>
-        <input type="password" id="password" placeholder="Şifre" class="w-full p-4 border-2 border-slate-100 rounded-2xl mb-4 text-center text-xl focus:ring-2 focus:ring-blue-500 outline-none">
+        <input type="password" id="password" placeholder="Şifre" class="w-full p-4 border-2 border-slate-200 rounded-2xl mb-4 text-center text-xl focus:ring-2 focus:ring-blue-500 outline-none">
         <button onclick="checkLogin()" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-bold text-lg shadow-lg active:scale-95 transition-all">Giriş Yap</button>
     </div>
 
     <div id="form-screen" class="max-w-md mx-auto hidden relative">
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-black tracking-tight">Malzeme Kayıt</h1>
-            <button onclick="location.reload()" class="bg-red-50 text-red-500 px-4 py-2 rounded-xl font-bold text-xs shadow-sm">ÇIKIŞ</button>
+        <div class="flex justify-between items-center mb-6 px-2">
+            <h1 class="text-2xl font-black tracking-tight text-slate-800">Malzeme Kayıt</h1>
+            <button onclick="location.reload()" class="bg-red-500 text-white px-4 py-2 rounded-xl font-bold text-xs shadow-md">ÇIKIŞ</button>
         </div>
         
         <div class="bg-white p-6 rounded-[2rem] shadow-xl mb-6">
             <div class="space-y-4">
                 <div>
-                    <label class="text-[10px] font-black text-slate-400 uppercase ml-2">Ürünü Alan Kişi</label>
-                    <input type="text" id="receiver" class="w-full p-4 bg-slate-50 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ad Soyad" autocomplete="off">
+                    <label class="text-[10px] font-black text-slate-500 uppercase ml-2">Ürünü Alan Kişi</label>
+                    <input type="text" id="receiver" class="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ad Soyad" autocomplete="off">
                 </div>
                 <div>
-                    <label class="text-[10px] font-black text-slate-400 uppercase ml-2">Ürün Seçimi</label>
-                    <select id="product-list" class="w-full p-4 bg-slate-50 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 appearance-none">
+                    <label class="text-[10px] font-black text-slate-500 uppercase ml-2">Ürün Seçimi</label>
+                    <select id="product-list" class="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="">Yükleniyor...</option>
                     </select>
                 </div>
                 <div class="flex space-x-3">
                     <div class="flex-1">
-                        <label class="text-[10px] font-black text-slate-400 uppercase ml-2">Miktar</label>
-                        <input type="number" id="amount" class="w-full p-4 bg-slate-50 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500" placeholder="0">
+                        <label class="text-[10px] font-black text-slate-500 uppercase ml-2">Miktar</label>
+                        <input type="number" id="amount" class="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500" placeholder="0">
                     </div>
                     <div class="flex-1">
-                        <label class="text-[10px] font-black text-slate-400 uppercase ml-2">Birim</label>
-                        <input type="text" id="unit" class="w-full p-4 bg-blue-50 text-blue-600 font-black rounded-2xl text-center" readonly placeholder="-">
+                        <label class="text-[10px] font-black text-slate-500 uppercase ml-2">Birim</label>
+                        <input type="text" id="unit" class="w-full p-4 bg-blue-50 text-blue-700 font-black rounded-2xl text-center border border-blue-100" readonly placeholder="-">
                     </div>
                 </div>
                 <div>
-                    <label class="text-[10px] font-black text-slate-400 uppercase ml-2">Bölüm / Not</label>
-                    <input type="text" id="dept" class="w-full p-4 bg-slate-50 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500" placeholder="Örn: Paketleme - Acil" autocomplete="off">
+                    <label class="text-[10px] font-black text-slate-500 uppercase ml-2">Bölüm / Not</label>
+                    <input type="text" id="dept" class="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500" placeholder="Örn: Paketleme" autocomplete="off">
                 </div>
                 <button onclick="submitData()" id="submit-btn" class="w-full bg-emerald-500 text-white p-5 rounded-2xl font-black text-lg shadow-lg active:scale-95 transition-all">KAYDI TAMAMLA</button>
-                <div id="success-msg" class="hidden text-center p-3 bg-emerald-50 text-emerald-600 rounded-2xl font-bold border border-emerald-100">✅ Başarıyla Kaydedildi!</div>
+                <div id="success-msg" class="hidden text-center p-3 bg-emerald-50 text-emerald-700 rounded-2xl font-bold border border-emerald-100">✅ Başarıyla Kaydedildi!</div>
             </div>
         </div>
 
@@ -60,18 +60,18 @@
         </button>
     </div>
 
-    <div id="logs-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md hidden z-50 p-4 flex items-center">
+    <div id="logs-modal" class="fixed inset-0 bg-slate-900/90 backdrop-blur-md hidden z-50 p-4 flex items-center">
         <div class="bg-white w-full max-w-md mx-auto rounded-[2.5rem] shadow-2xl h-[85vh] flex flex-col">
             <div class="p-8 border-b flex justify-between items-center">
                 <h2 class="text-2xl font-black text-slate-800">İşlem Geçmişi</h2>
-                <button onclick="closeLogs()" class="text-3xl font-light text-slate-300 hover:text-red-500 transition-colors">&times;</button>
+                <button onclick="closeLogs()" class="text-4xl font-light text-slate-400 hover:text-red-500 transition-colors">&times;</button>
             </div>
             
-            <div id="logs-container" class="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50/50">
-                <p class="text-center text-slate-400 py-10 font-bold">Veriler Getiriliyor...</p>
+            <div id="logs-container" class="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-100">
+                <p class="text-center text-slate-500 py-10 font-bold">Veriler Getiriliyor...</p>
             </div>
 
-            <div class="p-6 border-t">
+            <div class="p-6 border-t bg-white rounded-b-[2.5rem]">
                 <button onclick="loadRecentLogs()" class="w-full py-4 text-blue-600 font-black text-sm bg-blue-50 rounded-2xl">YENİLE ↻</button>
             </div>
         </div>
@@ -103,64 +103,62 @@
             const select = document.getElementById('product-list');
             select.innerHTML = '<option value="">Seçiniz...</option>';
             data.forEach(p => {
-                const name = p.Urun_Adi || p.product || p.Ürün;
+                const name = p["Ürün Adı"] || p.Urun_Adi || p.product;
                 if(name) {
                     const opt = document.createElement('option');
                     opt.value = name; opt.textContent = name; select.appendChild(opt);
                 }
             });
             select.addEventListener('change', (e) => {
-                const item = data.find(x => (x.Urun_Adi || x.product || x.Ürün) === e.target.value);
+                const item = data.find(x => (x["Ürün Adı"] || x.Urun_Adi || x.product) === e.target.value);
                 document.getElementById('unit').value = item ? (item.Birim || item.unit) : '';
             });
         }
 
         async function loadRecentLogs() {
             const container = document.getElementById('logs-container');
-            container.innerHTML = '<p class="text-center text-blue-500 font-bold animate-pulse py-10">Bağlanılıyor...</p>';
+            container.innerHTML = '<div class="text-center py-10 font-bold text-blue-600">Veriler taranıyor...</div>';
             try {
-                const res = await fetch(LOGS_DATA_URL);
+                // Cache engellemek için linkin sonuna rastgele sayı ekliyoruz
+                const res = await fetch(LOGS_DATA_URL + "?t=" + Math.random());
                 const logs = await res.json();
                 container.innerHTML = '';
                 
                 logs.reverse().forEach(log => {
-                    // Akıllı Sütun Yakalayıcı (Büyük/Küçük harf duyarsız)
-                    const getV = (keys) => {
-                        const found = Object.keys(log).find(k => keys.includes(k.toLowerCase().trim()));
-                        return found ? log[found] : '';
-                    };
-
-                    const product = getV(['product', 'urun_adi', 'ürün', 'urun']);
-                    const amount = getV(['amount', 'miktar']);
-                    const unit = getV(['unit', 'birim']);
-                    const receiver = getV(['receiver', 'alan_kisi', 'alan', 'alankisi']);
-                    const date = getV(['date', 'tarih']);
-                    const time = getV(['time', 'saat']);
-                    const dept = getV(['dept', 'bolum', 'departman', 'not', 'açıklama', 'aciklama']);
+                    // Excel'deki başlıklarınla tam eşleşme (Büyük/Küçük harf duyarlı başlıkların için)
+                    const pName = log["Ürün Adı"] || log.product || "Belirsiz";
+                    const pAmount = log["Miktar"] || log.amount || "0";
+                    const pUnit = log["Birim"] || log.unit || "";
+                    const pUser = log["Ürünü Alan Kişi"] || log.receiver || "Bilinmiyor";
+                    const pDate = log["Kayıt Tarihi"] || log.date || "";
+                    const pTime = log["Kayıt Saati"] || log.time || "";
+                    const pDept = log["Bölüm"] || log.dept || "-";
 
                     const div = document.createElement('div');
-                    div.className = "p-5 bg-white rounded-3xl border border-slate-100 shadow-sm";
+                    div.className = "p-5 bg-white rounded-3xl shadow-md border border-slate-200 animate-pop";
                     div.innerHTML = `
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="font-black text-slate-800 text-lg">${product || 'Belirsiz'}</span>
-                            <span class="bg-blue-600 text-white px-3 py-1 rounded-xl text-xs font-black">${amount} ${unit}</span>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="font-black text-slate-900 text-lg leading-tight">${pName}</span>
+                            <span class="bg-blue-600 text-white px-3 py-1 rounded-xl text-xs font-black shadow-sm">${pAmount} ${pUnit}</span>
                         </div>
-                        <div class="space-y-1">
-                            <div class="flex items-center text-[11px] text-slate-500 font-bold">
-                                <span class="w-16 text-slate-300">ALAN:</span> <span class="text-slate-700">${receiver || '-'}</span>
+                        <div class="space-y-2 border-t pt-3">
+                            <div class="flex items-center text-xs">
+                                <span class="w-16 font-black text-slate-400">ALAN:</span>
+                                <span class="text-slate-900 font-bold">${pUser}</span>
                             </div>
-                            <div class="flex items-center text-[11px] text-slate-500 font-bold">
-                                <span class="w-16 text-slate-300">NOT:</span> <span class="text-slate-700">${dept || '-'}</span>
+                            <div class="flex items-center text-xs">
+                                <span class="w-16 font-black text-slate-400">NOT:</span>
+                                <span class="text-slate-900 font-bold">${pDept}</span>
                             </div>
-                            <div class="flex justify-between text-[10px] text-slate-300 font-medium pt-2 border-t mt-2">
-                                <span>TARİH: ${date}</span>
-                                <span>SAAT: ${time}</span>
+                            <div class="flex justify-between text-[10px] text-slate-500 font-black mt-2 bg-slate-50 p-2 rounded-lg">
+                                <span>TARİH: ${pDate}</span>
+                                <span>SAAT: ${pTime}</span>
                             </div>
                         </div>
                     `;
                     container.appendChild(div);
                 });
-            } catch (e) { container.innerHTML = 'Veri çekme hatası.'; }
+            } catch (e) { container.innerHTML = '<p class="text-center py-10 text-red-500">Liste şu an yüklenemedi.</p>'; }
         }
 
         async function submitData() {
@@ -176,7 +174,7 @@
                 staff: "Sistem"
             };
             if(!data.receiver || !data.product || !data.amount) { alert('Formu doldur knk!'); return; }
-            btn.disabled = true; btn.innerText = 'YAZILIYOR...';
+            btn.disabled = true; btn.innerText = 'GÖNDERİLİYOR...';
             try {
                 const res = await fetch(N8N_POST_URL, {
                     method: 'POST',
@@ -189,7 +187,7 @@
                     document.getElementById('dept').value = '';
                     setTimeout(() => { document.getElementById('success-msg').classList.add('hidden'); }, 3000);
                 }
-            } catch (e) { alert('Bağlantı hatası!'); }
+            } catch (e) { alert('Hata!'); }
             btn.disabled = false; btn.innerText = 'KAYDI TAMAMLA';
         }
     </script>
