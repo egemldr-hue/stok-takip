@@ -3,36 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stok Takip Sistemi</title>
+    <title>Stok Takip Sistemi | Profesyonel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         #logs-container::-webkit-scrollbar { width: 5px; }
         #logs-container::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+        .font-black { font-weight: 900 !important; }
     </style>
 </head>
-<body class="bg-slate-200 min-h-screen p-4 font-sans text-slate-900">
+<body class="bg-slate-200 min-h-screen p-4 font-sans text-black">
 
     <div id="login-screen" class="max-w-md mx-auto bg-white p-8 rounded-3xl shadow-2xl mt-20">
-        <h2 class="text-3xl font-black mb-6 text-center text-blue-600">Sistem Girişi</h2>
-        <input type="password" id="password" placeholder="Şifre" class="w-full p-4 border-2 border-slate-300 rounded-2xl mb-4 text-center text-xl text-black outline-none font-bold">
-        <button onclick="checkLogin()" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-bold text-lg shadow-lg active:scale-95 transition-all">Giriş Yap</button>
+        <h2 class="text-3xl font-black mb-6 text-center text-blue-600 uppercase">Sistem Girişi</h2>
+        <input type="password" id="password" placeholder="Şifre" class="w-full p-4 border-2 border-slate-300 rounded-2xl mb-4 text-center text-xl text-black outline-none font-black">
+        <button onclick="checkLogin()" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black text-lg shadow-lg active:scale-95 transition-all">GİRİŞ YAP</button>
     </div>
 
     <div id="form-screen" class="max-w-md mx-auto hidden relative">
         <div class="flex justify-between items-center mb-6 px-2">
-            <h1 class="text-2xl font-black tracking-tight text-black">Malzeme Kayıt</h1>
-            <button onclick="location.reload()" class="bg-red-600 text-white px-4 py-2 rounded-xl font-bold text-xs shadow-md uppercase">Çıkış</button>
+            <h1 class="text-2xl font-black tracking-tighter text-black uppercase">Malzeme Kayıt</h1>
+            <button onclick="location.reload()" class="bg-red-600 text-white px-4 py-2 rounded-xl font-black text-xs shadow-md uppercase">Çıkış</button>
         </div>
         
-        <div class="bg-white p-6 rounded-[2rem] shadow-xl mb-6 border border-white">
+        <div class="bg-white p-6 rounded-[2rem] shadow-xl mb-6 border-b-4 border-blue-500">
             <div class="space-y-4">
                 <div>
                     <label class="text-[10px] font-black text-black uppercase ml-2">Ürünü Alan Kişi</label>
-                    <input type="text" id="receiver" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-black font-bold outline-none focus:border-blue-500" placeholder="Ad Soyad">
+                    <input type="text" id="receiver" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-black font-black outline-none focus:border-blue-500" placeholder="Ad Soyad">
                 </div>
                 <div>
                     <label class="text-[10px] font-black text-black uppercase ml-2">Ürün Seçimi</label>
-                    <select id="product-list" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-black font-bold outline-none">
+                    <select id="product-list" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-black font-black outline-none">
                         <option value="">Yükleniyor...</option>
                     </select>
                 </div>
@@ -43,19 +44,19 @@
                     </div>
                     <div class="flex-1">
                         <label class="text-[10px] font-black text-black uppercase ml-2">Birim</label>
-                        <input type="text" id="unit" class="w-full p-4 bg-blue-50 text-blue-800 font-black rounded-2xl text-center border-2 border-blue-100 text-xl" readonly placeholder="-">
+                        <input type="text" id="unit" class="w-full p-4 bg-blue-50 text-blue-900 font-black rounded-2xl text-center border-2 border-blue-200 text-xl" readonly placeholder="-">
                     </div>
                 </div>
                 <div>
                     <label class="text-[10px] font-black text-black uppercase ml-2">Bölüm / Not</label>
-                    <input type="text" id="dept" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-black font-bold outline-none" placeholder="Örn: Paketleme">
+                    <input type="text" id="dept" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-black font-black outline-none" placeholder="Örn: Paketleme">
                 </div>
                 <button onclick="submitData()" id="submit-btn" class="w-full bg-emerald-600 text-white p-5 rounded-2xl font-black text-lg shadow-lg active:scale-95 transition-all">KAYDI TAMAMLA</button>
-                <div id="success-msg" class="hidden text-center p-3 bg-emerald-100 text-emerald-800 rounded-2xl font-black animate-pulse">✅ Kayıt Sheets'e Eklendi!</div>
+                <div id="success-msg" class="hidden text-center p-3 bg-emerald-100 text-emerald-900 rounded-2xl font-black">✅ Sheets'e Kaydedildi!</div>
             </div>
         </div>
 
-        <button onclick="openLogs()" class="w-full bg-white border-2 border-blue-500 text-blue-600 p-5 rounded-[2rem] font-black flex justify-center items-center gap-3 shadow-xl hover:bg-blue-50">
+        <button onclick="openLogs()" class="w-full bg-white border-2 border-blue-600 text-blue-600 p-5 rounded-[2rem] font-black flex justify-center items-center gap-3 shadow-xl hover:bg-blue-50 transition-all">
             <span>📋 KAYIT GEÇMİŞİNİ GÖR</span>
         </button>
     </div>
@@ -63,16 +64,16 @@
     <div id="logs-modal" class="fixed inset-0 bg-slate-900/90 backdrop-blur-md hidden z-50 p-4 flex items-center">
         <div class="bg-white w-full max-w-md mx-auto rounded-[2.5rem] shadow-2xl h-[85vh] flex flex-col">
             <div class="p-8 border-b flex justify-between items-center">
-                <h2 class="text-2xl font-black text-black italic">İşlem Geçmişi</h2>
-                <button onclick="closeLogs()" class="text-4xl font-light text-slate-400 hover:text-red-500">&times;</button>
+                <h2 class="text-2xl font-black text-black uppercase italic">İşlem Geçmişi</h2>
+                <button onclick="closeLogs()" class="text-4xl font-light text-slate-400 hover:text-red-600">&times;</button>
             </div>
             
             <div id="logs-container" class="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-100">
-                <p class="text-center text-black py-10 font-bold italic">Yükleniyor...</p>
+                <p class="text-center text-black py-10 font-black italic animate-pulse">Veriler Taranıyor...</p>
             </div>
 
             <div class="p-6 border-t bg-white rounded-b-[2.5rem]">
-                <button onclick="loadRecentLogs()" class="w-full py-4 text-blue-600 font-black text-sm bg-blue-50 rounded-2xl active:scale-95 transition-all shadow-sm">YENİLE ↻</button>
+                <button onclick="loadRecentLogs()" class="w-full py-4 text-blue-600 font-black text-sm bg-blue-50 rounded-2xl active:scale-95 transition-all shadow-sm border-2 border-blue-100">LİSTEYİ YENİLE ↻</button>
             </div>
         </div>
     </div>
@@ -80,7 +81,6 @@
     <script>
         const SHEET_ID = '1oEEXP5UdlKQ_B4MamuSHMbpyMraFeX7y1ioLvOrYtP8';
         const SHEET_DATA_URL = `https://opensheet.elk.sh/${SHEET_ID}/Urun_Listesi`;
-        const LOGS_DATA_URL = `https://opensheet.elk.sh/${SHEET_ID}/KAYITLAR`;
         const N8N_POST_URL = 'https://deniz3300.app.n8n.cloud/webhook/kayit-ekle';
         
         function checkLogin() {
@@ -98,38 +98,42 @@
         function closeLogs() { document.getElementById('logs-modal').classList.add('hidden'); }
 
         async function loadProducts() {
-            const res = await fetch(SHEET_DATA_URL);
-            const data = await res.json();
-            const select = document.getElementById('product-list');
-            select.innerHTML = '<option value="">Seçiniz...</option>';
-            data.forEach(p => {
-                const name = p["Ürün Adı"] || p.Urun_Adi || p.product || p.Ürün;
-                if(name) {
-                    const opt = document.createElement('option');
-                    opt.value = name; opt.textContent = name; select.appendChild(opt);
-                }
-            });
-            select.addEventListener('change', (e) => {
-                const item = data.find(x => (x["Ürün Adı"] || x.Urun_Adi || x.product || x.Ürün) === e.target.value);
-                document.getElementById('unit').value = item ? (item.Birim || item.unit) : '';
-            });
+            try {
+                const res = await fetch(SHEET_DATA_URL);
+                const data = await res.json();
+                const select = document.getElementById('product-list');
+                select.innerHTML = '<option value="">Seçiniz...</option>';
+                data.forEach(p => {
+                    const name = p["Ürün Adı"] || p.Urun_Adi || p.product || p.Ürün;
+                    if(name) {
+                        const opt = document.createElement('option');
+                        opt.value = name; opt.textContent = name; select.appendChild(opt);
+                    }
+                });
+                select.addEventListener('change', (e) => {
+                    const item = data.find(x => (x["Ürün Adı"] || x.Urun_Adi || x.product || x.Ürün) === e.target.value);
+                    document.getElementById('unit').value = item ? (item.Birim || item.unit) : '';
+                });
+            } catch (e) { console.error("Ürün listesi çekilemedi."); }
         }
 
         async function loadRecentLogs() {
             const container = document.getElementById('logs-container');
-            container.innerHTML = '<p class="text-center text-blue-600 font-bold py-10">Veriler taranıyor...</p>';
+            container.innerHTML = '<p class="text-center text-blue-600 font-black py-10 animate-pulse">Sheets Taranıyor...</p>';
             try {
-                const res = await fetch(LOGS_DATA_URL + "?t=" + Date.now());
+                // Cache engellemek için linkin sonuna rastgele sayı ekliyoruz
+                const LOGS_URL = `https://opensheet.elk.sh/${SHEET_ID}/KAYITLAR`;
+                const res = await fetch(LOGS_URL + "?t=" + Date.now());
                 const logs = await res.json();
                 container.innerHTML = '';
                 
-                if (logs.length === 0) {
-                    container.innerHTML = '<p class="text-center py-10 font-bold">Kayıt bulunamadı.</p>';
+                if (!logs || logs.length === 0 || !Array.isArray(logs)) {
+                    container.innerHTML = '<p class="text-center py-10 font-black text-red-500">Excel\'de kayıt bulunamadı!</p>';
                     return;
                 }
 
                 logs.reverse().forEach(log => {
-                    // AKILLI BAŞLIK BULUCU
+                    // Excel başlıklarınla (Büyük/Küçük harf duyarsız) eşleştirme
                     const findV = (searchKeys) => {
                         const keys = Object.keys(log);
                         const match = keys.find(k => {
@@ -139,25 +143,25 @@
                         return match ? log[match] : '';
                     };
 
-                    const pName = findV(['ürünadı', 'urunadi', 'product', 'ürün']);
+                    const pName = findV(['ürünadı', 'urunadi', 'product', 'ürün', 'urun']);
                     const pAmount = findV(['miktar', 'amount']);
                     const pUnit = findV(['birim', 'unit']);
-                    const pUser = findV(['ürünüalankişi', 'urunalankisi', 'receiver', 'alan']);
+                    const pUser = findV(['ürünüalankişi', 'urunalankisi', 'receiver', 'alan', 'alankisi']);
                     const pDate = findV(['kayıttarihi', 'kayittarihi', 'date', 'tarih']);
                     const pTime = findV(['kayıtsaati', 'kayitsaati', 'time', 'saat']);
-                    const pDept = findV(['bölüm', 'bolum', 'dept', 'not']);
+                    const pDept = findV(['bölüm', 'bolum', 'dept', 'not', 'açıklama']);
 
                     const div = document.createElement('div');
-                    div.className = "p-5 bg-white rounded-3xl shadow-md border-2 border-slate-50";
+                    div.className = "p-5 bg-white rounded-3xl shadow-lg border-2 border-slate-50";
                     div.innerHTML = `
                         <div class="flex justify-between items-start mb-2">
-                            <span class="font-black text-black text-lg">${pName || 'Belirsiz'}</span>
-                            <span class="bg-blue-600 text-white px-3 py-1 rounded-xl text-xs font-black">${pAmount || '0'} ${pUnit || ''}</span>
+                            <span class="font-black text-black text-lg leading-tight uppercase">${pName || 'Belirsiz'}</span>
+                            <span class="bg-blue-600 text-white px-3 py-1 rounded-xl text-xs font-black shadow-md">${pAmount || '0'} ${pUnit || ''}</span>
                         </div>
                         <div class="space-y-1 border-t pt-2">
-                            <p class="text-xs text-black font-bold">👤 Alan: <span class="font-black">${pUser || '-'}</span></p>
-                            <p class="text-xs text-black font-bold">📝 Not: <span class="font-black text-blue-600">${pDept || '-'}</span></p>
-                            <div class="flex justify-between text-[10px] text-slate-500 font-black pt-2">
+                            <p class="text-[11px] text-black font-black uppercase"><span class="text-blue-500">Alan:</span> ${pUser || '-'}</p>
+                            <p class="text-[11px] text-black font-black uppercase"><span class="text-blue-500">Bölüm:</span> ${pDept || '-'}</p>
+                            <div class="flex justify-between text-[10px] text-slate-400 font-black mt-2 pt-1 border-t border-dotted">
                                 <span>📅 ${pDate || ''}</span>
                                 <span>⏰ ${pTime || ''}</span>
                             </div>
@@ -166,8 +170,7 @@
                     container.appendChild(div);
                 });
             } catch (e) { 
-                console.error(e);
-                container.innerHTML = '<p class="text-center py-10 text-red-600 font-bold">Bağlantı Hatası!</p>'; 
+                container.innerHTML = '<p class="text-center py-10 text-red-600 font-black">BAĞLANTI HATASI!<br><span class="text-[10px] text-slate-400">Excel\'deki sayfa isminin KAYITLAR olduğunu kontrol et.</span></p>'; 
             }
         }
 
@@ -183,7 +186,7 @@
                 dept: document.getElementById('dept').value,
                 staff: "Sistem"
             };
-            if(!data.receiver || !data.product || !data.amount) { alert('Formu doldur knk!'); return; }
+            if(!data.receiver || !data.product || !data.amount) { alert('Lütfen tüm alanları doldur knk!'); return; }
             btn.disabled = true; btn.innerText = 'GÖNDERİLİYOR...';
             try {
                 const res = await fetch(N8N_POST_URL, {
@@ -197,7 +200,7 @@
                     document.getElementById('dept').value = '';
                     setTimeout(() => { document.getElementById('success-msg').classList.add('hidden'); }, 3000);
                 }
-            } catch (e) { alert('Hata!'); }
+            } catch (e) { alert('Hata oluştu!'); }
             btn.disabled = false; btn.innerText = 'KAYDI TAMAMLA';
         }
     </script>
