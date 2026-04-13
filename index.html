@@ -9,12 +9,15 @@
 <body class="bg-gray-100 min-h-screen p-4">
     <div id="login-screen" class="max-w-md mx-auto bg-white p-8 rounded-xl shadow-lg mt-20">
         <h2 class="text-2xl font-bold mb-6 text-center text-blue-600">Sistem Girişi</h2>
-        <input type="password" id="password" placeholder="Şifre (1234)" class="w-full p-3 border rounded-lg mb-4 text-center">
-        <button onclick="checkLogin()" class="w-full bg-blue-600 text-white p-3 rounded-lg font-bold">Giriş Yap</button>
+        <input type="password" id="password" placeholder="Şifre" class="w-full p-3 border rounded-lg mb-4 text-center text-lg">
+        <button onclick="checkLogin()" class="w-full bg-blue-600 text-white p-3 rounded-lg font-bold text-lg hover:bg-blue-700">Giriş Yap</button>
     </div>
 
-    <div id="form-screen" class="max-w-md mx-auto bg-white p-6 rounded-xl shadow-lg hidden">
+    <div id="form-screen" class="max-w-md mx-auto bg-white p-6 rounded-xl shadow-lg hidden relative">
+        <button onclick="logout()" class="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-md text-sm font-bold shadow hover:bg-red-600">Çıkış Yap</button>
+        
         <h2 class="text-xl font-bold mb-4 text-blue-600 border-b pb-2">Malzeme Kayıt Formu</h2>
+        
         <div class="space-y-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700">Ürünü Alan Kişi</label>
@@ -44,12 +47,11 @@
                 <label class="block text-sm font-medium text-gray-700">Açıklama / Not</label>
                 <textarea id="note" class="w-full p-2 border rounded-lg" rows="2" autocomplete="off"></textarea>
             </div>
-            <button onclick="submitData()" id="submit-btn" class="w-full bg-green-600 text-white p-4 rounded-lg font-bold text-lg shadow-md">KAYDET</button>
+            <button onclick="submitData()" id="submit-btn" class="w-full bg-green-600 text-white p-4 rounded-lg font-bold text-lg shadow-md hover:bg-green-700 transition-colors">KAYDET</button>
         </div>
     </div>
 
     <script>
-        // Senin tablonun ID'si ve sayfa adını buraya net bir şekilde yazdım
         const SHEET_ID = '1oEEXP5UdlKQ_B4MamuSHMbpyMraFeX7y1ioLvOrYtP8';
         const SHEET_NAME = 'Urun_Listesi';
         const SHEET_DATA_URL = `https://opensheet.elk.sh/${SHEET_ID}/${SHEET_NAME}`;
@@ -61,15 +63,19 @@
             if(document.getElementById('password').value === '1234') {
                 document.getElementById('login-screen').classList.add('hidden');
                 document.getElementById('form-screen').classList.remove('hidden');
+                document.getElementById('password').value = ''; // Giriş yapınca şifre kutusunu temizle
                 loadProducts();
             } else { alert('Hatalı Şifre!'); }
+        }
+
+        function logout() {
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('form-screen').classList.add('hidden');
         }
 
         async function loadProducts() {
             try {
                 const response = await fetch(SHEET_DATA_URL);
-                if (!response.ok) throw new Error('Tabloya ulaşılamadı');
-                
                 allProducts = await response.json();
                 const select = document.getElementById('product-list');
                 select.innerHTML = '<option value="">Seçiniz...</option>';
@@ -87,12 +93,7 @@
                     const item = allProducts.find(x => x.Urun_Adi === e.target.value);
                     document.getElementById('unit').value = item ? item.Birim : '';
                 });
-                
-                console.log('Ürünler yüklendi:', allProducts);
-            } catch (e) { 
-                console.error('Hata:', e);
-                alert('Ürünler çekilemedi! Tablodaki sayfa isminin "Urun_Listesi" olduğundan emin olun.');
-            }
+            } catch (e) { alert('Ürün listesi yüklenemedi!'); }
         }
 
         async function submitData() {
@@ -108,6 +109,7 @@
                 note: document.getElementById('note').value,
                 staff: "Sistem"
             };
+
             if(!data.receiver || !data.product || !data.amount) { alert('Lütfen gerekli alanları doldurun!'); return; }
             
             btn.disabled = true; 
@@ -121,15 +123,18 @@
                 });
                 if(res.ok) {
                     alert('Kayıt Başarıyla Eklendi!');
-                    location.reload();
-                } else {
-                    throw new Error('Gönderim hatası');
-                }
-            } catch (e) { 
-                alert('Hata: Kayıt eklenemedi, n8n bağlantısını kontrol edin.'); 
-                btn.disabled = false; 
-                btn.innerText = 'KAYDET'; 
-            }
+                    // Formu temizle ama sayfayı yenileme
+                    document.getElementById('receiver').value = '';
+                    document.getElementById('product-list').value = '';
+                    document.getElementById('amount').value = '';
+                    document.getElementById('unit').value = '';
+                    document.getElementById('dept').value = '';
+                    document.getElementById('note').value = '';
+                } else { throw new Error(); }
+            } catch (e) { alert('Hata: Kayıt eklenemedi.'); }
+            
+            btn.disabled = false; 
+            btn.innerText = 'KAYDET';
         }
     </script>
 </body>
