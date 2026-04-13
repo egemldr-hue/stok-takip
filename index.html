@@ -69,7 +69,7 @@
             </div>
             
             <div id="logs-container" class="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-100">
-                <p class="text-center text-slate-500 py-10 font-black italic animate-pulse tracking-widest">Excel Taranıyor...</p>
+                <p class="text-center text-slate-500 py-10 font-black italic animate-pulse tracking-widest">Veriler Getiriliyor...</p>
             </div>
 
             <div class="p-6 border-t bg-white rounded-b-[2.5rem]">
@@ -113,21 +113,21 @@
                     const item = data.find(x => (x["Ürün Adı"] || x.Urun_Adi || x.product || x.Ürün) === e.target.value);
                     document.getElementById('unit').value = item ? (item.Birim || item.unit) : '';
                 });
-            } catch (e) { console.error("Ürün listesi çekilemedi."); }
+            } catch (e) { console.error("Hata!"); }
         }
 
         async function loadRecentLogs() {
             const container = document.getElementById('logs-container');
-            container.innerHTML = '<p class="text-center text-blue-600 font-black py-10 animate-pulse uppercase tracking-widest">Bağlantı Kuruluyor...</p>';
+            container.innerHTML = '<p class="text-center text-blue-600 font-black py-10 animate-pulse uppercase tracking-widest">Excel Taranıyor...</p>';
             try {
-                // EXCEL SEKME ADI: KAYIT
+                // Sayfa adı Excel'de KAYIT olarak güncellenmişti
                 const res = await fetch(`https://opensheet.elk.sh/${SHEET_ID}/KAYIT?t=${Date.now()}`);
                 if (!res.ok) throw new Error();
                 const logs = await res.json();
                 
                 container.innerHTML = '';
                 if (!Array.isArray(logs) || logs.length === 0) {
-                    container.innerHTML = '<p class="text-center py-10 font-black text-slate-400 uppercase">Kayıt Bulunamadı.</p>';
+                    container.innerHTML = '<p class="text-center py-10 font-black text-slate-400 uppercase">Henüz kayıt yok.</p>';
                     return;
                 }
 
@@ -136,8 +136,8 @@
                     const pAmount = log["Miktar"] || log.amount || "0";
                     const pUnit = log["Birim"] || log.unit || "";
                     const pUser = log["Ürünü Alan Kişi"] || log.receiver || "-";
-                    const pDate = log["Kayıt Tarihi"] || log.date || "";
-                    const pTime = log["Kayıt Saati"] || log.time || "";
+                    const pDate = log["Kayıt Tarihi"] || log.date || "Tarih Yok";
+                    const pTime = log["Kayıt Saati"] || log.time || "Saat Yok";
                     const pNote = log["Açıklama"] || log["Bölüm"] || "-";
 
                     const div = document.createElement('div');
@@ -147,10 +147,10 @@
                             <span class="font-black text-black text-lg uppercase leading-tight">${pName}</span>
                             <span class="bg-blue-600 text-white px-3 py-1 rounded-xl text-xs font-black shadow-md">${pAmount} ${pUnit}</span>
                         </div>
-                        <div class="space-y-1 border-t pt-2">
-                            <p class="text-[11px] text-black font-black uppercase"><span class="text-blue-500 italic">Alan:</span> ${pUser}</p>
-                            <p class="text-[11px] text-black font-black uppercase"><span class="text-blue-500 italic">Not:</span> ${pNote}</p>
-                            <div class="flex justify-between text-[10px] text-slate-400 font-black mt-2 pt-1 border-t border-dotted">
+                        <div class="space-y-1 border-t pt-2 border-slate-100">
+                            <p class="text-[12px] text-black font-black uppercase"><span class="text-blue-500 italic">Alan:</span> ${pUser}</p>
+                            <p class="text-[12px] text-black font-black uppercase"><span class="text-blue-500 italic">Not:</span> ${pNote}</p>
+                            <div class="flex justify-between text-[11px] text-black font-black mt-3 pt-2 border-t border-dotted border-slate-300 bg-slate-50 p-2 rounded-xl">
                                 <span>📅 ${pDate}</span>
                                 <span>⏰ ${pTime}</span>
                             </div>
@@ -188,7 +188,6 @@
                     document.getElementById('amount').value = '1';
                     document.getElementById('note').value = '';
                     setTimeout(() => { document.getElementById('success-msg').classList.add('hidden'); }, 3000);
-                    // Kayıttan sonra listeyi arka planda güncelle
                     loadRecentLogs();
                 }
             } catch (e) { alert('Hata oluştu!'); }
